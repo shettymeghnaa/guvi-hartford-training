@@ -18,8 +18,12 @@ function generateNumber() {
   return code;
 }
 
+function calculateAmount(type, rate, duration) {
+  return rate * duration; 
+}
+
 async function runSystem() {
-  console.log("PO and Invoice Management System");
+  console.log("PO and Invoice Management System\n");
 
   const trainerName = await ask("Trainer name: ");
   const trainerEmail = await ask("Trainer email: ");
@@ -32,24 +36,63 @@ async function runSystem() {
   const rate = Number(await ask("Rate: "));
   const duration = Number(await ask("Duration: "));
 
-  const totalAmount = rate * duration;
-  const poNumber = generateNumber();
+  const purchaseOrder = {
+    poNumber: generateNumber(),
+    trainer: {
+      name: trainerName,
+      email: trainerEmail,
+      experience: trainerExp
+    },
+    training: {
+      courseName,
+      clientName,
+      startDate,
+      endDate
+    },
+    payment: {
+      type: paymentType,
+      rate,
+      duration
+    },
+    totalAmount: calculateAmount(paymentType, rate, duration)
+  };
 
   const today = new Date();
-  const eligibleDate = new Date(endDate);
+  const eligibleDate = new Date(purchaseOrder.training.endDate);
   eligibleDate.setDate(eligibleDate.getDate() + 30);
 
   console.log("\n------------------------");
 
   if (today >= eligibleDate) {
+    const invoiceDate = today;
+    const dueDate = new Date(invoiceDate);
+    dueDate.setDate(dueDate.getDate() + 30);
+
+    const invoice = {
+      invoiceNumber: generateNumber(),
+      poNumber: purchaseOrder.poNumber,
+      trainerName: purchaseOrder.trainer.name,
+      courseName: purchaseOrder.training.courseName,
+      totalAmount: purchaseOrder.totalAmount,
+      invoiceDate,
+      dueDate,
+      status: today > dueDate ? "OVERDUE" : "UNPAID"
+    };
+
     console.log("INVOICE GENERATED");
-    console.log("Invoice Number :", poNumber);
-    console.log("PO Number      :", poNumber);
-    console.log("Trainer Name   :", trainerName);
-    console.log("Course Name    :", courseName);
-    console.log("Client Name    :", clientName);
-    console.log("Total Amount   :", totalAmount);
-    console.log("Invoice Date   :", today.toDateString());
+    console.log("Invoice Number :", invoice.invoiceNumber);
+    console.log("PO Number      :", invoice.poNumber);
+    console.log("Trainer Name   :", invoice.trainerName);
+    console.log("Course Name    :", invoice.courseName);
+    console.log("Total Amount   :", invoice.totalAmount);
+    console.log("Invoice Date   :", invoice.invoiceDate.toDateString());
+    console.log("Due Date       :", invoice.dueDate.toDateString());
+    console.log("Status         :", invoice.status);
+
+    if (invoice.status === "OVERDUE") {
+      console.log("Email sent to Accounts Team: Invoice is OVERDUE");
+    }
+
   } else {
     console.log("Invoice not yet generated");
   }
