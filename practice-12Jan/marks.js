@@ -1,4 +1,3 @@
-
 function result(regularExams, assignments, finalScore, callback) {
   const totalScore = regularExams + assignments + finalScore;
   callback(totalScore);

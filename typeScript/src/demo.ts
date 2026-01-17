@@ -9,7 +9,6 @@ function sumOfSquaresOfResults(arr: number[]): number {
   return sum;
 }
 
-// Example
 const arr = [2,10,15,3,17,4,5,7];
 console.log(sumOfSquaresOfResults(arr));
 

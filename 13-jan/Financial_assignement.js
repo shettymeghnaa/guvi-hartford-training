@@ -3,17 +3,17 @@ class FinancialAccount {
     constructor(accountNumber, accountHolder, balance = 0) {
         this.accountNumber = accountNumber;
         this.accountHolder = accountHolder;
-        this._balance = balance; // Encapsulated with underscore convention
+        this._balance = balance;
         this.transactions = [];
         this.createdDate = new Date();
     }
 
-    // Getter for balance (encapsulation)
+  
     get balance() {
         return this._balance;
     }
 
-    // Method to deposit money
+   
     deposit(amount, description = "Deposit") {
         if (amount <= 0) {
             throw new Error("Deposit amount must be positive");
@@ -23,7 +23,7 @@ class FinancialAccount {
         return this._balance;
     }
 
-    // Method to withdraw money
+   
     withdraw(amount, description = "Withdrawal") {
         if (amount <= 0) {
             throw new Error("Withdrawal amount must be positive");
@@ -36,7 +36,7 @@ class FinancialAccount {
         return this._balance;
     }
 
-    // Private method (convention with underscore)
+    
     _validateAmount(amount) {
         if (typeof amount !== 'number' || isNaN(amount)) {
             throw new Error("Invalid amount");
@@ -44,7 +44,7 @@ class FinancialAccount {
         return true;
     }
 
-    // Record transaction
+   
     recordTransaction(amount, type, description) {
         const transaction = {
             id: this.transactions.length + 1,
@@ -58,19 +58,18 @@ class FinancialAccount {
         return transaction;
     }
 
-    // Get account statement
+   
     getStatement(startDate, endDate = new Date()) {
         return this.transactions.filter(transaction =>
             transaction.date >= startDate && transaction.date <= endDate
         );
     }
 
-    // Calculate interest (to be overridden by child classes)
+   
     calculateInterest() {
-        return 0; // Base class returns 0 interest
+        return 0; 
     }
 
-    // Display account info
     displayInfo() {
         return `${this.constructor.name} #${this.accountNumber}: ${this.accountHolder} - Balance: $${this.balance.toFixed(2)}`;
     }
@@ -79,16 +78,16 @@ class FinancialAccount {
 class SavingsAccount extends FinancialAccount {
     constructor(accountNumber, accountHolder, balance = 0, interestRate = 0.01, insurancePolicy = null) {
         super(accountNumber, accountHolder, balance);
-        this.interestRate = interestRate; // annual interest rate (e.g., 0.05 for 5%)
-        this.insurancePolicy = insurancePolicy; // insurance policy details
+        this.interestRate = interestRate; 
+        this.insurancePolicy = insurancePolicy; 
     }
 
-    // Calculate interest for given number of years (simple interest)
+    
     calculateInterest(years = 1) {
         return this._balance * this.interestRate * years;
     }
 
-    // Apply interest to the account and record a transaction
+    
     accrueInterest(years = 1) {
         const interest = this.calculateInterest(years);
         if (interest > 0) {
@@ -98,28 +97,28 @@ class SavingsAccount extends FinancialAccount {
         return interest;
     }
 
-    // Get insurance policy details
+    
     getInsuranceDetails() {
         return this.insurancePolicy ? `Insurance Policy: ${this.insurancePolicy}` : 'No insurance policy';
     }
 }
 
-// Simple runnable example
+
 if (typeof require !== 'undefined' && require.main === module) {
     const printHeader = title => console.log('\n=== ' + title + ' ===');
 
-    // Create a list of accounts
+    
     const accounts = [];
 
     printHeader('Creating Accounts');
     const acc = new FinancialAccount('001', 'Alice', 100);
     accounts.push(acc);
-    const sav = new SavingsAccount('002', 'Bob', 1000, 0.05, 'Life Insurance Policy #12345'); // 5% annual with insurance
+    const sav = new SavingsAccount('002', 'Bob', 1000, 0.05, 'Life Insurance Policy #12345'); 
     accounts.push(sav);
-    const sav2 = new SavingsAccount('003', 'Charlie', 500, 0.03); // 3% annual, no insurance
+    const sav2 = new SavingsAccount('003', 'Charlie', 500, 0.03); 
     accounts.push(sav2);
 
-    // Function to print list of all accounts
+    
     function printAllAccounts() {
         printHeader('List of All Accounts');
         const accountsTable = accounts.map(account => ({
@@ -131,7 +130,7 @@ if (typeof require !== 'undefined' && require.main === module) {
         console.table(accountsTable);
     }
 
-    // Function to print account details and transactions by account number
+    
     function printAccountDetails(accountNumber) {
         const account = accounts.find(acc => acc.accountNumber === accountNumber);
         if (!account) {
@@ -164,7 +163,7 @@ if (typeof require !== 'undefined' && require.main === module) {
 
     printHeader('SavingsAccount demo');
     console.log(sav.displayInfo());
-    const interest = sav.accrueInterest(1); // accrue 1 year
+    const interest = sav.accrueInterest(1); 
     console.log(`Accrued interest: $${interest.toFixed(2)}`);
     console.log('After interest:', sav.displayInfo());
     console.log(sav.getInsuranceDetails());
@@ -173,13 +172,13 @@ if (typeof require !== 'undefined' && require.main === module) {
     console.log(sav2.displayInfo());
     console.log(sav2.getInsuranceDetails());
 
-    // Print list of all accounts
+    
     printAllAccounts();
 
-    // Print details for specific accounts
+    
     printAccountDetails('001');
     printAccountDetails('002');
     printAccountDetails('003');
-    printAccountDetails('004'); // Non-existent
+    printAccountDetails('004'); 
 }
 

@@ -1,10 +1,9 @@
-// Constants for pricing
-const FLAT_RATE_PER_SFT = 2500; // Rs per sq ft
-const PARKING_RATE = 100000; // Rs per parking (1 lakh)
-const HIGH_RISE_ADDITIONAL_RATE = 10; // Rs per sq ft after 5th floor
+
+const FLAT_RATE_PER_SFT = 2500; 
+const PARKING_RATE = 100000;
+const HIGH_RISE_ADDITIONAL_RATE = 10; 
 const HIGH_RISE_START_FLOOR = 5;
 
-// Function to calculate total cost
 function calculateTotalCost(area, floor, parkings) {
     let baseCost = area * FLAT_RATE_PER_SFT;
     let highRiseCost = 0;
@@ -15,17 +14,17 @@ function calculateTotalCost(area, floor, parkings) {
     return baseCost + highRiseCost + parkingCost;
 }
 
-// Example data for 2BHK
-const bhk2Area = 1000; // sq ft
-const bhk2Floor = 3; // below 5th floor, no high rise charge
+
+const bhk2Area = 1000;
+const bhk2Floor = 3; 
 const bhk2Parkings = 1;
 
-// Example data for 3BHK
-const bhk3Area = 1500; // sq ft
-const bhk3Floor = 7; // above 5th floor, high rise charge applies
+
+const bhk3Area = 1500; 
+const bhk3Floor = 7; 
 const bhk3Parkings = 2;
 
-// Calculate and display costs
+
 console.log("Total cost for 2BHK flat:");
 console.log("Area:", bhk2Area, "sq ft");
 console.log("Floor:", bhk2Floor);
